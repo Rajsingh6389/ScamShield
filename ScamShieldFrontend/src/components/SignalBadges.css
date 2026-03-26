@@ -1,0 +1,71 @@
+.signals-section {
+  margin-top: 28px;
+  animation: fadeInUp 0.5s ease both;
+}
+
+.signals-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.signals-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.signal-badge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  animation: fadeInUp 0.4s ease both;
+  animation-delay: var(--delay, 0s);
+  cursor: default;
+}
+
+.signal-fake {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: #fca5a5;
+}
+
+.signal-real {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #86efac;
+}
+
+.signal-word {
+  position: relative;
+  z-index: 1;
+}
+
+.signal-score {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.signal-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 0 2px 0 0;
+  transition: width 0.8s ease;
+}
+
+.signal-fake .signal-bar { background: var(--danger); }
+.signal-real .signal-bar { background: var(--success); }
