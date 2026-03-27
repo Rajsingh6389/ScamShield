@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import SignalBadges from './SignalBadges';
+import CyberTerminal from './CyberTerminal';
 import './Analyzer.css';
-
-const API_URL = 'http://localhost:8000';
+import { API_URL } from '../config/api';
 
 const EXAMPLES = [
   {
@@ -15,12 +15,46 @@ const EXAMPLES = [
   },
 ];
 
-export default function Analyzer() {
+export default function Analyzer({ user, onInboxScan }) {
   const [text, setText] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [inboxLoading, setInboxLoading] = useState(false);
   const [error, setError] = useState('');
   const resultRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  async function handleFileScan(selectedFile) {
+    if (!selectedFile) return;
+    setLoading(true);
+    setError('');
+    setResult(null);
+    
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const res = await fetch(`${API_URL}/scan-file`, {
+        method: 'POST',
+        body: formData,
+      });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.detail || `Server error: ${res.status}`);
+      }
+      const data = await res.json();
+      setResult(data);
+      if (data.extracted_text) {
+         setText(data.extracted_text);
+      }
+      setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    } catch (e) {
+      setError(e.message.includes('fetch') ? 'Cannot connect to API. Make sure the backend is running on port 8000.' : e.message);
+    } finally {
+      setLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }
 
   async function handleAnalyze() {
     if (!text.trim()) return;
@@ -45,6 +79,29 @@ export default function Analyzer() {
     }
   }
 
+  async function fetchInbox() {
+    if (!user) return;
+    setInboxLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch(`${API_URL}/scan-inbox`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.error) {
+        setError(data.error);
+      } else {
+        onInboxScan?.(data);
+        setTimeout(() => {
+          document.getElementById('inbox')?.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+      }
+    } catch {
+      setError('Failed to fetch emails. Make sure you are logged in.');
+    } finally {
+      setInboxLoading(false);
+    }
+  }
+
   function loadExample(exText) {
     setText(exText);
     setResult(null);
@@ -55,13 +112,38 @@ export default function Analyzer() {
 
   return (
     <main className="analyzer-container">
+
+      {/* Scan Inbox CTA — shown only when logged in */}
+      {user && (
+        <div className="glass inbox-cta-card">
+          <div className="inbox-cta-left">
+            <div className="inbox-cta-icon">📩</div>
+            <div className="inbox-cta-text">
+              <p className="inbox-cta-title">Scan Your Gmail Inbox</p>
+              <p className="inbox-cta-sub">Check your last 10 emails for scams instantly</p>
+            </div>
+          </div>
+          <button
+            className={`analyze-btn inbox-cta-btn ${inboxLoading ? 'loading' : ''}`}
+            onClick={fetchInbox}
+            disabled={inboxLoading}
+          >
+            {inboxLoading ? (
+              <><span className="spinner" /> Scanning...</>
+            ) : (
+              <>📩 Scan My Emails</>
+            )}
+          </button>
+        </div>
+      )}
+
       {/* Input Card */}
       <div className="glass analyzer-card">
         <div className="card-header">
           <div className="card-icon">🔍</div>
           <div>
-            <h2 className="card-title">Analyze Job Posting</h2>
-            <p className="card-desc">Paste the full job description below</p>
+            <h2 className="card-title">RESEARCH_INPUT_FIELD</h2>
+            <p className="card-desc">PASTE JOB SPECIFICATIONS FOR NEURAL ANALYSIS</p>
           </div>
         </div>
 
@@ -76,13 +158,35 @@ export default function Analyzer() {
         <div className="textarea-wrapper">
           <textarea
             id="job-input"
-            className="job-textarea"
+            className={`job-textarea ${loading ? 'textarea-scanning' : ''}`}
             rows={8}
-            placeholder="Paste the job listing here... (e.g., job title, responsibilities, requirements, company info)"
+            placeholder="AWAITING SYSTEM_INPUT..."
             value={text}
             onChange={(e) => setText(e.target.value)}
+            disabled={loading}
           />
-          <div className="char-count">{text.length} chars</div>
+          <CyberTerminal active={loading} />
+          <div className="char-count">{text.length} BUFFER_SIZE</div>
+        </div>
+
+        <div className="upload-wrapper">
+          <input 
+            type="file" 
+            accept=".pdf,.png,.jpg,.jpeg,.webp" 
+            id="file-upload" 
+            className="file-input"
+            ref={fileInputRef}
+            disabled={loading}
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                handleFileScan(e.target.files[0]);
+              }
+            }}
+          />
+          <label htmlFor="file-upload" className="file-label">
+            <span className="upload-icon">📄</span>
+            <span>Upload Screenshot or PDF</span>
+          </label>
         </div>
 
         {error && <div className="error-banner">⚠️ {error}</div>}
@@ -94,15 +198,9 @@ export default function Analyzer() {
           disabled={loading || !text.trim()}
         >
           {loading ? (
-            <>
-              <span className="spinner" />
-              Analyzing...
-            </>
+            <><span className="spinner" />Analyzing...</>
           ) : (
-            <>
-              <span>🛡️</span>
-              Analyze with AI
-            </>
+            <><span>🛡️</span>Analyze with AI</>
           )}
         </button>
       </div>

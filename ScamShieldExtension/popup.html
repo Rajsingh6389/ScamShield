@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScamShield Extension</title>
+  <link rel="stylesheet" href="popup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <span class="dot"></span>
+      ScamShield AI
+    </div>
+  </div>
+
+  <div class="content" id="main-content">
+    <p class="subtitle">Extracting text from exactly what you see...</p>
+    <button id="scan-btn" class="primary-btn">
+      <span class="icon">🔍</span> Scan Current Page
+    </button>
+  </div>
+
+  <div id="loading-state" class="state-container hidden">
+    <div class="scanner-laser"></div>
+    <div class="spinner"></div>
+    <p class="loading-text">[PROCESS] EXTRACTING EXPERTISE...</p>
+  </div>
+
+  <div id="error-state" class="state-container hidden">
+    <div class="icon-fake">⚠️</div>
+    <p class="error-text" id="error-msg">Failed to connect.</p>
+    <button id="retry-btn" class="secondary-btn">Retry</button>
+  </div>
+
+  <div id="result-state" class="result-card hidden">
+    <div class="result-header">
+      <div id="verdict-icon" class="result-icon-wrap"></div>
+      <div class="result-meta">
+        <span class="result-label">Verdict</span>
+        <h2 id="verdict-text" class="result-verdict"></h2>
+      </div>
+    </div>
+    
+    <div class="domain-container">
+      <span class="result-label">Source</span>
+      <div id="domain-val" class="domain-warn">Checking...</div>
+    </div>
+    
+    <p class="confidence-text">Confidence: <strong id="confidence-val"></strong></p>
+    <div class="signals-container" id="signals"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

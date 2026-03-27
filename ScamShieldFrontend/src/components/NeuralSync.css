@@ -1,0 +1,112 @@
+.sync-section {
+  padding: 150px 24px;
+  background: radial-gradient(circle at center, #050505 0%, #000 100%);
+}
+
+.sync-container {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  padding: 40px 0;
+}
+
+.sync-line-bg {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sync-line-active {
+  position: absolute;
+  left: 20px;
+  top: 0;
+  width: 2px;
+  height: var(--scroll-progress, 0%);
+  background: var(--accent-cyber);
+  box-shadow: 0 0 20px var(--accent-cyber);
+  transition: height 0.1s ease-out;
+  z-index: 2;
+}
+
+.sync-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+.sync-step {
+  display: flex;
+  gap: 60px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.sync-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.marker-dot {
+  width: 12px;
+  height: 12px;
+  background: #000;
+  border: 2px solid var(--accent-cyber);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-cyber);
+}
+
+.marker-label {
+  position: absolute;
+  right: 50px;
+  font-family: monospace;
+  font-size: 10px;
+  color: var(--accent-cyber);
+  white-space: nowrap;
+}
+
+.sync-content {
+  opacity: 0.8;
+  transition: all 0.5s;
+}
+
+.sync-step:hover .sync-content {
+  opacity: 1;
+  transform: translateX(10px);
+}
+
+.sync-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+}
+
+.sync-desc {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .sync-section { padding: 80px 20px; }
+  .sync-steps { gap: 80px; }
+  .sync-step { padding-left: 45px; }
+  .sync-line-bg, .sync-line-active { left: 15px; }
+  .sync-marker { left: 15px; width: 30px; }
+  .marker-label { display: none; }
+  .sync-title { font-size: 1.1rem; }
+}

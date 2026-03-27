@@ -1,71 +1,69 @@
 .signals-section {
-  margin-top: 28px;
+  margin-top: 32px;
   animation: fadeInUp 0.5s ease both;
 }
 
 .signals-title {
-  font-size: 13px;
-  font-weight: 600;
+  font-family: monospace;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 2px;
   color: var(--text-muted);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  padding-left: 4px;
+  border-left: 2px solid var(--border);
 }
 
 .signals-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .signal-badge {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  font-size: 13px;
-  font-weight: 500;
+  gap: 12px;
+  padding: 8px 16px;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: 'Fira Code', monospace;
+  font-size: 11px;
+  font-weight: 700;
   animation: fadeInUp 0.4s ease both;
   animation-delay: var(--delay, 0s);
-  cursor: default;
+  text-transform: uppercase;
 }
 
 .signal-fake {
-  background: var(--danger-bg);
-  border: 1px solid var(--danger-border);
-  color: #fca5a5;
+  border-color: var(--danger-border);
+  color: var(--danger);
+  box-shadow: 0 0 10px rgba(255, 49, 49, 0.05);
 }
 
 .signal-real {
-  background: var(--success-bg);
-  border: 1px solid var(--success-border);
-  color: #86efac;
-}
-
-.signal-word {
-  position: relative;
-  z-index: 1;
+  border-color: var(--success-border);
+  color: var(--success);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.05);
 }
 
 .signal-score {
-  position: relative;
-  z-index: 1;
-  font-size: 11px;
-  opacity: 0.7;
-  font-variant-numeric: tabular-nums;
+  font-size: 10px;
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 4px;
+  border-radius: 2px;
 }
 
 .signal-bar {
   position: absolute;
   left: 0;
   bottom: 0;
-  height: 2px;
-  border-radius: 0 2px 0 0;
-  transition: width 0.8s ease;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  transition: width 1s ease;
 }
-
-.signal-fake .signal-bar { background: var(--danger); }
-.signal-real .signal-bar { background: var(--success); }

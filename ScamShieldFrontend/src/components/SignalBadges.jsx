@@ -4,7 +4,7 @@ import './SignalBadges.css';
 export default function SignalBadges({ fakeSignals = [], realSignals = [], isFake }) {
   const signals = isFake ? fakeSignals : realSignals;
   const colorClass = isFake ? 'signal-fake' : 'signal-real';
-  const label = isFake ? '🚨 Scam Signals Detected' : '✅ Legitimacy Signals';
+  const label = isFake ? "THREAT_MARKERS_DETECTED" : "INTEGRITY_SIGNALS_IDENTIFIED";
 
   if (!signals.length) return null;
 

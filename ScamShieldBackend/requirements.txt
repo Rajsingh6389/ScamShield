@@ -4,3 +4,13 @@ joblib
 scikit-learn
 numpy
 pydantic
+itsdangerous
+authlib
+google-api-python-client
+httpx
+python-multipart
+pdfplumber
+easyocr
+torch
+torchvision
+python-dotenv

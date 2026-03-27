@@ -1,0 +1,157 @@
+.code-window {
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.1);
+  border: 1px solid var(--border);
+  width: 100%;
+  max-width: 500px;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  position: relative;
+  text-align: left;
+}
+
+.window-header {
+  background: #050505;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+}
+
+.dot.red { background: #300; border-color: #f00; }
+.dot.yellow { background: #330; border-color: #ff0; }
+.dot.green { background: #030; border-color: #0f0; }
+
+.window-title {
+  color: var(--accent-cyber);
+  font-family: monospace;
+  font-size: 11px;
+  margin-left: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity: 0.7;
+}
+
+.window-body {
+  padding: 20px;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Fira Code', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+  background: radial-gradient(circle at center, #050805 0%, #000 100%);
+}
+
+.code-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.code-line {
+  display: flex;
+  gap: 12px;
+}
+
+.line-number {
+  color: #1a331a;
+  user-select: none;
+  min-width: 20px;
+  text-align: right;
+  font-size: 11px;
+}
+
+.line-text {
+  color: #008f11;
+  text-shadow: 0 0 5px rgba(0, 143, 17, 0.5);
+}
+
+/* Syntax Highlighting Colors - Matrix Style */
+.keyword { color: var(--accent-cyber); font-weight: bold; }
+.function { color: #88ff88; }
+.string { color: #00bb00; }
+.comment { color: #004400; font-style: italic; }
+.number { color: var(--accent-neon); }
+
+.cursor-blink {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: var(--accent-cyber);
+  animation: blink 0.8s step-end infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scanning Effect - Sonar Grid */
+.window-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+}
+
+.scanning-active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.05) 50%, transparent);
+  animation: scan-pulse 1.5s linear infinite;
+}
+
+@keyframes scan-pulse {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+.scanning-laser {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-cyber);
+  box-shadow: 0 0 20px var(--accent-cyber), 0 0 40px var(--accent-cyber);
+  animation: scan 2s linear alternate infinite;
+  z-index: 10;
+}
+
+@keyframes scan {
+  from { top: 0; }
+  to { top: 100%; }
+}
+
+@media (max-width: 900px) {
+  .code-window {
+    height: 300px;
+    font-size: 13px;
+  }
+}

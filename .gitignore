@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+bin/
+lib/
+include/
+dist/
+build/
+*.pkl
+
+# Node
+node_modules/
+dist-ssr
+*.local
+
+# Secrets
+credentials.json
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
