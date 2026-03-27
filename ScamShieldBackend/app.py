@@ -19,9 +19,15 @@ ocr_reader = None
 app = FastAPI(title="ScamShield API", version="2.0.0")
 
 # CORS
+origins = [
+    FRONTEND_URL,
+    "http://localhost:5173",
+    "https://scamshieldinnovators.vercel.app"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
