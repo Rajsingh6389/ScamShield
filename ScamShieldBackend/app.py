@@ -20,7 +20,7 @@ app = FastAPI(title="ScamShield API", version="2.0.0")
 
 # CORS
 origins = [
-    FRONTEND_URL,
+    FRONTEND_URL.rstrip("/"),
     "http://localhost:5173",
     "https://scamshieldinnovators.vercel.app"
 ]
