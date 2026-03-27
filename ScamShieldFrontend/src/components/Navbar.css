@@ -144,8 +144,20 @@
   color: var(--danger);
 }
 
+@media (max-width: 600px) {
+  .navbar { top: 5px; margin: 0 5px; }
+  .navbar-inner { padding: 10px 12px; }
+  .nav-links { gap: 16px; }
+  .logo-text { font-size: 1rem; }
+  .logo-icon { font-size: 1rem; }
+  .nav-link { font-size: 11px; }
+}
+
 @media (max-width: 480px) {
-  .navbar-inner { padding: 14px 16px; }
-  .nav-links { gap: 12px; }
+  .navbar-inner { padding: 8px 10px; }
+  .nav-links { gap: 10px; }
   .user-name { display: none; }
+  .logo-badge { display: none; }
+  .nav-user { padding-left: 10px; }
+  .nav-btn { padding: 6px 10px; font-size: 10px; }
 }
