@@ -9,7 +9,8 @@ authlib
 google-api-python-client
 httpx
 python-multipart
-pdfplumber
+pdfplumber==0.11.4
+pdfminer.six==20231228
 easyocr
 torch
 torchvision
