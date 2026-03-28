@@ -34,12 +34,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Session Middleware
+# Session Middleware (Optimized for Vercel Proxy)
 app.add_middleware(
     SessionMiddleware, 
     secret_key=SESSION_SECRET_KEY,
-    same_site="none" if IS_PRODUCTION else "lax",
-    https_only=True if IS_PRODUCTION else False
+    same_site="lax",  # Default and safest for proxied same-origin
+    https_only=False  # Proxy handles SSL, but we can leave this False for better compatibility with Vercel's edge nodes
 )
 
 # ---------------- LOAD MODEL ---------------- #
@@ -88,7 +88,12 @@ def clean_text(text: str) -> str:
 # ---------------- AUTH ROUTES ---------------- #
 @app.get("/auth/google")
 async def login(request: Request):
-    redirect_uri = request.url_for('auth_callback')
+    if IS_PRODUCTION:
+        # For Vercel proxy, we must use the Vercel domain for the callback
+        redirect_uri = f"{FRONTEND_URL.rstrip('/')}/api/auth/callback"
+    else:
+        redirect_uri = request.url_for('auth_callback')
+    
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @app.get("/auth/callback")
