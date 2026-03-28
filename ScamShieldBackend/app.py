@@ -98,7 +98,12 @@ async def login(request: Request):
 
 @app.get("/auth/callback")
 async def auth_callback(request: Request):
-    token = await oauth.google.authorize_access_token(request)
+    if IS_PRODUCTION:
+        redirect_uri = f"{FRONTEND_URL.rstrip('/')}/api/auth/callback"
+    else:
+        redirect_uri = request.url_for('auth_callback')
+        
+    token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
     userinfo = token.get("userinfo", {})
     request.session["user"] = {
         "access_token": token["access_token"],
