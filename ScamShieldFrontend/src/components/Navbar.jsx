@@ -3,17 +3,30 @@ import { API_URL } from '../config/api';
 import './Navbar.css';
 
 export default function Navbar({ user, loading, login, logout }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isMenuOpen ? 'menu-active' : ''}`}>
       <div className="navbar-inner">
-        <div className="nav-logo cyber-glitch" data-text="ScamShield">
+        <div className="nav-logo cyber-glitch" data-text="ScamShield" onClick={closeMenu}>
           <div className="logo-icon">📡</div>
           <span className="logo-text">SCAM<span className="text-highlight">SHIELD</span></span>
           <span className="logo-badge cyber">SECURE</span>
         </div>
-        <div className="nav-links">
-          <a href="#analyze" className="nav-link">Analyze</a>
-          <a href={`${API_URL}/docs`} target="_blank" rel="noreferrer" className="nav-link">
+
+        {/* Hamburger Menu Icon */}
+        <button className={`hamburger ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu} aria-label="Toggle Menu">
+          <span className="bar"></span>
+          <span className="bar"></span>
+          <span className="bar"></span>
+        </button>
+
+        <div className={`nav-links ${isMenuOpen ? 'open' : ''}`}>
+          <a href="#analyze" className="nav-link" onClick={closeMenu}>Analyze</a>
+          <a href={`${API_URL}/docs`} target="_blank" rel="noreferrer" className="nav-link" onClick={closeMenu}>
             API Docs ↗
           </a>
           {!loading && (
@@ -28,12 +41,12 @@ export default function Navbar({ user, loading, login, logout }) {
                   />
                 )}
                 <span className="user-name">{user.name.split(' ')[0]}</span>
-                <button className="nav-btn logout-btn" onClick={logout}>
+                <button className="nav-btn logout-btn" onClick={() => { logout(); closeMenu(); }}>
                   Logout
                 </button>
               </div>
             ) : (
-              <button className="nav-btn login-btn" onClick={login}>
+              <button className="nav-btn login-btn" onClick={() => { login(); closeMenu(); }}>
                 <span>🔑</span> Login with Google
               </button>
             )

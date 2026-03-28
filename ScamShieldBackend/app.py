@@ -11,7 +11,7 @@ from google.oauth2.credentials import Credentials
 from authlib.integrations.starlette_client import OAuth
 import numpy as np
 from urllib.parse import urlparse
-from config.settings import FRONTEND_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+from config.settings import FRONTEND_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET_KEY, IS_PRODUCTION
 
 # global easyocr reader
 ocr_reader = None
@@ -19,6 +19,7 @@ ocr_reader = None
 app = FastAPI(title="ScamShield API", version="2.0.0")
 
 # CORS
+print("FRONTEND_URL:", FRONTEND_URL)
 origins = [
     FRONTEND_URL.rstrip("/"),
     "http://localhost:5173",
@@ -34,7 +35,12 @@ app.add_middleware(
 )
 
 # Session Middleware
-app.add_middleware(SessionMiddleware, secret_key="supersecretkey")
+app.add_middleware(
+    SessionMiddleware, 
+    secret_key=SESSION_SECRET_KEY,
+    same_site="none" if IS_PRODUCTION else "lax",
+    https_only=True if IS_PRODUCTION else False
+)
 
 # ---------------- LOAD MODEL ---------------- #
 model = joblib.load("models/fake_job_model.pkl")
