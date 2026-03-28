@@ -10,4 +10,4 @@ SESSION_SECRET_KEY = os.getenv("SESSION_SECRET_KEY", "supersecretkey")
 
 # Detect if we are in production
 # Render sets RENDER=true, Vercel sets VERCEL=1
-IS_PRODUCTION = os.getenv("RENDER") == "true" or os.getenv("VERCEL") == "1" or "localhost" not in FRONTEND_URL
+IS_PRODUCTION = os.getenv("RENDER") == "true" or os.getenv("VERCEL") == "1" or ("localhost" not in FRONTEND_URL and "127.0.0.1" not in FRONTEND_URL)

@@ -102,16 +102,22 @@ async def auth_callback(request: Request):
         redirect_uri = f"{FRONTEND_URL.rstrip('/')}/api/auth/callback"
     else:
         redirect_uri = request.url_for('auth_callback')
-        
-    token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
-    userinfo = token.get("userinfo", {})
-    request.session["user"] = {
-        "access_token": token["access_token"],
-        "name": userinfo.get("name", ""),
-        "email": userinfo.get("email", ""),
-        "picture": userinfo.get("picture", ""),
-    }
-    return RedirectResponse(url=FRONTEND_URL)
+    
+    try:
+        token = await oauth.google.authorize_access_token(request, redirect_uri=redirect_uri)
+        userinfo = token.get("userinfo", {})
+        request.session["user"] = {
+            "access_token": token["access_token"],
+            "name": userinfo.get("name", ""),
+            "email": userinfo.get("email", ""),
+            "picture": userinfo.get("picture", ""),
+        }
+        return RedirectResponse(url=FRONTEND_URL)
+    except Exception as e:
+        print(f"--- OAUTH ERROR ---: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"OAuth error: {str(e)}")
 
 @app.get("/me")
 def get_me(request: Request):
