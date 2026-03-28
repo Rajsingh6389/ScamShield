@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.responses import RedirectResponse
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 from pydantic import BaseModel
 import joblib
 import re
@@ -34,12 +35,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Trust the Vercel proxy headers
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts=["*"])
+
 # Session Middleware (Optimized for Vercel Proxy)
 app.add_middleware(
     SessionMiddleware, 
     secret_key=SESSION_SECRET_KEY,
-    same_site="lax",  # Default and safest for proxied same-origin
-    https_only=False  # Proxy handles SSL, but we can leave this False for better compatibility with Vercel's edge nodes
+    same_site="lax",  # Crucial for cross-site redirects from Google
+    https_only=True   # Both Vercel and Render use HTTPS
 )
 
 # ---------------- LOAD MODEL ---------------- #
